@@ -152,14 +152,67 @@
             font-family: 'Orbitron', sans-serif;
             font-weight: bold;
         }
+        :root {
+            --spark-blue: #00d2ff;     
+            --spark-orange: #ff9d00;   /* 新增：火花橘 */
+            --spark-dark: #0a0e17;     
+            --spark-white: #f0f4f8;    
+            --glass-bg: rgba(10, 14, 23, 0.85);
+        }
+
+        /* 導覽列文字修正 */
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--spark-white); /* 改為白色，與 logo.png 更搭 */
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: var(--spark-blue); /* 部分藍色點綴 */
+        }
+
+        /* --- 6. 右側懸浮按鈕 (Side Bar) --- */
+        .side-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .side-btn {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--spark-blue);
+            color: var(--spark-white);
+            padding: 12px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            writing-mode: vertical-lr; /* 直向文字 */
+            letter-spacing: 2px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .side-btn:hover {
+            background: var(--spark-orange); /* 懸浮變橘色 */
+            border-color: var(--spark-orange);
+            color: #000;
+            transform: translateX(-5px);
+            box-shadow: 0 0 15px var(--spark-orange);
+        }
     </style>
 </head>
 <body>
-
-    <nav>
+<nav>
         <div class="logo-container" style="display: flex; align-items: center;">
-            <img src="nav-logo.png" alt="SPARK LOGO" style="max-height: 35px; width: auto; margin-right: 12px;">
-            <div class="logo">SPARK</div>
+            <img src="nav-logo.png" alt="LOGO" style="max-height: 35px; width: auto; margin-right: 12px;">
+            <div class="logo">enjoyai-<span>taiwan</span></div>
         </div>
         <div class="nav-links">
             <a href="#about">關於大賽</a>
@@ -168,10 +221,13 @@
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-logo-wrapper">
-            <img src="enjoy-ai-main-logo.png" alt="ENJOY AI MAIN" style="max-width: 280px; height: auto; margin-bottom: 25px; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));">
-        </div>
+    <div class="side-nav">
+        <a href="#" class="side-btn">前往報名</a>
+        <a href="#" class="side-btn">題庫專區</a>
+        <a href="#" class="side-btn">報名簡章</a>
+        <a href="#" class="side-btn">匯款完成表單</a>
+        <a href="#" class="side-btn">加入群組</a>
+    </div>
         <h1>ENJOY AI 2026</h1>
         <p>探索智能程式的無限可能</p>
     </section>
