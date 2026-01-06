@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENJOY AI 2026 | 台灣智能程式科技教育推廣協會 SPARK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;900&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. 全局變數與基礎設定 --- */
+        :root {
+            --spark-blue: #00d2ff;     /* 主色：電漿藍 */
+            --spark-dark: #0a0e17;     /* 背景：深空黑 */
+            --spark-white: #f0f4f8;    /* 文字：冷白 */
+            --spark-accent: #ff9d00;   /* 強調：火花橘 */
+            --glass-bg: rgba(10, 14, 23, 0.85);
+        }
+
+        body {
+            background-color: var(--spark-dark);
+            color: var(--spark-white);
+            margin: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- 2. 導覽列：玻璃感設計 --- */
+        nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0; width: 90%;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--spark-blue);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: var(--spark-white);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--spark-blue);
+            text-shadow: 0 0 8px var(--spark-blue);
+        }
+
+        /* --- 3. 首頁 Banner (Hero) --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at center, rgba(0, 210, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, var(--spark-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--spark-white);
+            opacity: 0.8;
+        }
+
+        /* --- 4. 內容區塊基礎樣式 --- */
+        .container {
+            padding: 80px 10%;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--spark-blue);
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--spark-blue);
+            margin: 15px auto;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: var(--spark-blue);
+            background: rgba(0, 210, 255, 0.02);
+            transform: translateY(-5px);
+        }
+
+        /* --- 5. 頁尾：正名與簡約打字機 --- */
+        footer {
+            padding: 60px 10%;
+            background: #05070a;
+            border-top: 1px solid rgba(0, 210, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .spark-tag {
+            color: var(--spark-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SPARK | ENJOY AI</div>
+        <div class="nav-links">
+            <a href="#about">關於大賽</a>
+            <a href="#rules">競賽規範</a>
+            <a href="#contact">聯絡我們</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>ENJOY AI 2026</h1>
+        <p>探索智能程式的無限可能</p>
+    </section>
+
+    <div class="container" id="about">
+        <h2 class="section-title">發展願景</h2>
+        <div class="card-grid">
+            <div class="info-card">
+                <h3>智能普及</h3>
+                <p>致力於將 AI 視覺與自動化技術帶入校園，培養下一代開發者。</p>
+            </div>
+            <div class="info-card">
+                <h3>技術交流</h3>
+                <p>透過 SPARK 平台，媒合產學合作，提升程式教育的深度。</p>
+            </div>
+            <div class="info-card">
+                <h3>未來人才</h3>
+                <p>為積動城市培育具備實戰能力的 AI 機器人技術人才。</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-copyright">
+            © 2026 ENJOY AI TAIWAN | <span class="spark-tag">SPARK</span><br>
+            台灣智能程式科技教育推廣協會
+        </div>
+        <div style="font-size: 0.7rem; color: #444; letter-spacing: 2px;">
+            SYSTEM STATUS: ONLINE // VERSION 1.0.0
+        </div>
+    </footer>
+
+    <script>
+        // 簡單的滾動監聽：導覽列縮減效果
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.padding = '10px 5%';
+                nav.style.background = 'rgba(10, 14, 23, 0.95)';
+            } else {
+                nav.style.padding = '15px 5%';
+                nav.style.background = 'var(--glass-bg)';
+            }
+        });
+    </script>
+</body>
+</html>
