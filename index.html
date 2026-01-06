@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. 導覽列：名稱大寫與選單優化 --- */
+       /* --- 2. 導覽列：優化版 --- */
         nav {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -34,7 +34,8 @@
             justify-content: space-between;
             align-items: center;
             position: fixed;
-            top: 0; width: 90%;
+            top: 0; 
+            width: 90%; /* 這裡建議改為 width: 100%; box-sizing: border-box; 否則右邊會空一塊 */
             z-index: 1000;
         }
 
@@ -49,18 +50,58 @@
             font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: 1px;
-            text-transform: uppercase; /* 強制轉大寫 */
+            text-transform: uppercase;
         }
         .logo span { color: var(--spark-blue); }
+
+        /* 修正連結區域：使用 flex 讓清單橫向 */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none; /* 移除點點 */
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            position: relative;
+            margin-left: 20px; /* 控制按鈕間距 */
+        }
 
         .nav-links a {
             color: var(--spark-white);
             text-decoration: none;
-            margin-left: 20px;
             font-size: 0.9rem;
             transition: 0.3s;
+            display: block; /* 增加點擊範圍 */
         }
+        
         .nav-links a:hover { color: var(--spark-blue); }
+
+        /* --- 下拉選單核心樣式 --- */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1a202c; 
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%; 
+            left: 0;
+            padding: 10px 0; /* 增加一點內距比較好看 */
+        }
+
+        .dropdown-content a {
+            margin-left: 0; /* 重置下拉選單內的邊距 */
+            padding: 12px 20px;
+            font-size: 0.85rem;
+        }
+
+        /* 滑鼠移入 li 時，顯示選單 */
+        .nav-links li:hover .dropdown-content {
+            display: block;
+        }
 
         /* --- 3. 首頁 Banner 恢復排版 --- */
         .hero {
