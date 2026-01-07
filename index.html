@@ -213,6 +213,65 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+        /* --- Hero 佈局微調 --- */
+.hero-content {
+    display: flex;
+    flex-direction: column; /* 確保垂直排列 */
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+/* --- 大 LOGO 互動設計 --- */
+.logo-interaction-wrapper {
+    perspective: 1000px; /* 開啟 3D 視角 */
+    margin-bottom: 30px; /* 與下方文字的間距 */
+}
+
+.hero-main-logo {
+    width: 320px; /* 放大 LOGO 尺寸，可依需求調整 */
+    height: auto;
+    /* 初始光暈效果，維持您原本的科技感 */
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.4)); 
+    
+    /* 動畫效果 */
+    animation: logoFloat 4s ease-in-out infinite; /* 自動上下浮動 */
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+    cursor: pointer;
+}
+
+/* --- 互動感：滑鼠懸停效果 --- */
+.hero-main-logo:hover {
+    /* 懸停時放大並產生 3D 傾斜感 */
+    transform: scale(1.15) rotateX(10deg) rotateY(-5deg); 
+    filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.8)); /* 增強發光 */
+}
+
+/* --- 文字樣式微調 (確保依序排列) --- */
+.hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 10px 0;
+    /* 維持原本配色，僅調整間距 */
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+/* --- 自動浮動動畫 Keyframes --- */
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(2deg); /* 向上飄浮並輕微轉動 */
+    }
+}
     </style>
 </head>
 <body>
@@ -245,11 +304,13 @@
         <a href="#" class="side-btn">加入群組</a>
     </div>
 
-    <section class="hero">
-        <div class="hero-logo-wrapper">
-            <img src="enjoy-ai-main-logo.png" alt="ENJOY AI">
+  <section class="hero" id="home">
+    <div class="hero-content">
+        <div class="logo-interaction-wrapper">
+            <img src="your-logo-file.png" alt="Enjoy AI Logo" class="hero-main-logo">
         </div>
-        <h1>ENJOY AI 2026</h1>
+
+        <h1 class="hero-title">ENJOY AI 2026</h1>
         <p>探索智能程式的無限可能</p>
     </section>
 
