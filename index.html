@@ -511,132 +511,177 @@ html {
         max-width: 140px; 
     }
 }
-        /* 基礎佈局 */
-.rules-grid {
+/* 1. 標題置中與整體佈局 */
+.rules-section {
+    width: 100%;
+    padding: 80px 0;
+    background: #05050a;
     display: flex;
-    gap: 40px;
-    align-items: stretch;
-    max-width: 1100px;
-    margin: 0 auto;
-    perspective: 1000px; /* 啟動 3D 視角 */
+    flex-direction: column;
+    align-items: center; /* 確保標題與內容全部水平置中 */
 }
 
-/* --- 左側相框特效 --- */
+.rules-section .section-title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 60px;
+    font-size: 2.5rem;
+    color: white;
+    letter-spacing: 3px;
+}
+
+.rules-grid {
+    display: flex;
+    gap: 50px;
+    align-items: center; /* 確保左右高度對齊 */
+    max-width: 1200px;
+    width: 95%;
+    perspective: 1500px; /* 強化 3D 深度感 */
+}
+
+/* 2. 左側相框：流水燈核心 (框不動，光在跑) */
 .photo-frame-wrapper {
-    flex: 1;
+    flex: 1.2; /* 稍微加大相框比例 */
     position: relative;
-    padding: 10px;
-    background: #0a0a15;
-    border-radius: 20px;
-    overflow: visible; /* 允許破框 */
-    min-height: 500px;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 保持正方形比例 */
+    border-radius: 25px;
+    padding: 4px; /* 這就是流水燈的寬度 */
+    background: rgba(255, 255, 255, 0.05);
+    overflow: visible; /* 允許破框浮出 */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* 流水燈邊框效果 */
-.flow-light-border {
+/* 流水燈動畫：僅旋轉背景漸變 */
+.photo-frame-wrapper::before {
+    content: "";
     position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    padding: 3px; /* 邊框寬度 */
-    background: conic-gradient(from 0deg, transparent, #00ffff, #ff00ff, transparent);
-    animation: rotateLight 4s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+    inset: -2px;
+    border-radius: 27px;
+    /* 流水燈顏色：螢光藍與桃紅 */
+    background: conic-gradient(from var(--angle), #00ffff, #ff00ff, #00ffff);
+    animation: rotateAngle 3s linear infinite;
+    z-index: 0;
 }
 
-@keyframes rotateLight {
-    to { --angle: 360deg; transform: rotate(360deg); }
+/* 遮罩層：蓋住中間，只露出邊緣的光 */
+.photo-frame-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 4px; /* 邊框粗度 */
+    background: #05050a;
+    border-radius: 22px;
+    z-index: 1;
 }
 
-/* 圖片容器與破框特效 */
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotateAngle {
+    to { --angle: 360deg; }
+}
+
+/* 3. 圖片容器與破框特效 (Pop-out Effect) */
 .photo-container {
+    position: relative;
     width: 90%;
     height: 90%;
-    position: relative;
+    z-index: 2;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.5s ease-out;
 }
 
 .main-photo {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    filter: brightness(0.8);
-    transition: 0.6s;
+    object-fit: contain; /* 確保機器人圖片不被裁切 */
+    border-radius: 15px;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
 }
 
-/* 滑鼠懸停：破框浮出 */
+/* 懸停觸發：圖片破框浮出 */
 .photo-frame-wrapper:hover .photo-container {
-    transform: rotateX(10deg) rotateY(-10px) translateZ(50px);
+    transform: translateZ(80px) translateY(-20px) rotateX(5deg);
 }
 
 .photo-frame-wrapper:hover .main-photo {
-    filter: brightness(1.1);
-    box-shadow: 0 20px 50px rgba(0, 255, 255, 0.5);
+    filter: drop-shadow(0 30px 50px rgba(0, 255, 255, 0.8)) brightness(1.2);
+    /* 這裡可以增加 scale 讓它看起來更大 */
+    transform: scale(1.1);
 }
 
-/* --- 右側內容優化 --- */
+/* 4. 右側規則內容區 */
 .info-column {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
 }
 
 .info-card {
-    background: rgba(20, 25, 40, 0.95);
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 25px;
-    color: white;
+    background: rgba(20, 25, 45, 0.9);
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .info-card h3 {
     color: #ff9100;
-    margin-bottom: 15px;
-    font-size: 1.4rem;
-    border-left: 4px solid #ff9100;
-    padding-left: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.info-card ul {
-    list-style: none;
-    line-height: 2;
-}
-
+/* 任務清單網格化，避免過長 */
 .mission-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    font-size: 0.95rem;
-    color: #ccc;
+    gap: 12px;
+    color: #b0b0b0;
+    font-size: 1rem;
 }
 
-/* 按鈕區 */
+/* 5. 底部按鈕置中 */
 .action-bar {
+    width: 100%;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .pdf-btn {
-    padding: 12px 30px;
+    padding: 15px 40px;
     border: 2px solid #00ffff;
     color: #00ffff;
-    text-decoration: none;
-    border-radius: 5px;
+    background: transparent;
+    border-radius: 8px;
+    font-weight: bold;
     transition: 0.3s;
+    text-decoration: none;
 }
 
 .pdf-btn:hover {
     background: #00ffff;
-    color: black;
-    box-shadow: 0 0 20px #00ffff;
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+}
+
+/* 響應式：手機版改為上下擺放 */
+@media (max-width: 992px) {
+    .rules-grid {
+        flex-direction: column;
+    }
+    .photo-frame-wrapper {
+        max-width: 400px;
+    }
 }
 </style>
 </head>
@@ -690,7 +735,7 @@ html {
             <div class="photo-frame-wrapper">
                 <div class="flow-light-border"></div>
                 <div class="photo-container">
-                    <img src="your-robot-image.png" alt="GRG Robot" class="main-photo">
+                    <img src="your-robot-image.jpg" alt="GRG Robot" class="main-photo">
                     <div class="pop-out-part"></div> </div>
             </div>
 
