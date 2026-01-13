@@ -212,63 +212,162 @@
 .winner-table td {
     line-height: 1.5;
 }
-        /* 獎盃能量容器 */
-.trophy-energy-field {
-    position: relative;
-    width: 320px;
-    height: 450px;
-    margin: 60px auto;
-    background: rgba(10, 14, 23, 0.8);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: crosshair;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10;
+    /* --- 雙相框佈局容器 --- */
+.glory-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 左右各一半 */
+    gap: 60px; /* 兩個相框的距離 */
+    max-width: 1000px;
+    margin: 50px auto;
+    perspective: 1000px;
+    padding: 20px;
 }
 
-/* 常態流動電流邊框 */
-.trophy-energy-field::after {
+/* 手機版自動變直排 */
+@media (max-width: 768px) {
+    .glory-grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- 核心卡片設計 (能量抑制器) --- */
+.thunder-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4; /* 保持直式比例 */
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1;
+}
+
+/* --- 1. 靜態：瘋狂亂竄的電流邊框 --- */
+/* 使用四個偽元素模擬四周不規則閃電 */
+.thunder-card::before, .thunder-card::after, 
+.thunder-card .sparks::before, .thunder-card .sparks::after {
     content: '';
     position: absolute;
-    inset: -5px;
-    border: 2px solid transparent;
-    border-radius: 25px;
-    background: linear-gradient(90deg, transparent, #00d2ff, #7f00ff, transparent) border-box;
-    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    filter: drop-shadow(0 0 15px #00d2ff);
-    animation: electric-flow 2s linear infinite;
+    background: #00d2ff; /* 閃電藍 */
+    z-index: -1;
+    transition: 0.2s;
 }
 
-/* 獎盃圖片本體 */
-.trophy-img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-    z-index: 11;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5));
+/* 上下邊框電流 */
+.thunder-card::before, .thunder-card::after {
+    height: 2px;
+    width: 0%;
+    left: 0;
+    box-shadow: 0 0 10px #00d2ff, 0 0 20px #fff;
+    animation: lightning-crawl-h 2s infinite linear alternate-reverse;
+}
+.thunder-card::before { top: 0; }
+.thunder-card::after { bottom: 0; animation-delay: 1s; }
+
+/* 左右邊框電流 */
+.thunder-card .sparks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.thunder-card .sparks::before, .thunder-card .sparks::after {
+    width: 2px;
+    height: 0%;
+    top: 0;
+    box-shadow: 0 0 10px var(--spark-orange), 0 0 20px #fff; /* 混入橘色電流 */
+    animation: lightning-crawl-v 1.5s infinite linear alternate;
+}
+.thunder-card .sparks::before { left: 0; }
+.thunder-card .sparks::after { right: 0; animation-delay: 0.5s; }
+
+/* --- 圖片本體設定 --- */
+.thunder-card img {
+    width: 96%;
+    height: 96%;
+    object-fit: contain; /* 完整顯示獎盃 */
+    transition: transform 0.1s; /* 極快反應 */
+    position: relative;
+    z-index: 2;
+    filter: brightness(0.9) contrast(1.1);
 }
 
-/* --- 震撼感觸發狀態 --- */
-
-.trophy-energy-field:hover {
-    transform: scale(1.15) rotate(1deg); /* 圖片炸裂放大 */
-    box-shadow: 0 0 50px rgba(0, 210, 255, 0.8), 0 0 100px rgba(127, 0, 255, 0.4);
+/* --- 2. 懸停：視覺炸裂 (Thunder Shock) --- */
+.thunder-card:hover {
+    z-index: 10; /* 確保炸裂時壓在最上面 */
+    box-shadow: 
+        0 0 30px rgba(0, 210, 255, 0.6), 
+        0 0 60px rgba(255, 110, 0, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-.trophy-energy-field:hover .trophy-img {
-    filter: drop-shadow(0 0 30px #fff) brightness(1.3) url(#lightning-shock); /* 電閃雷鳴濾鏡 */
-    transform: scale(1.1);
+.thunder-card:hover img {
+    animation: thunder-shake 0.4s cubic-bezier(.36,.07,.19,.97) both infinite;
+    transform: scale(1.15); /* 瞬間放大 */
+    filter: brightness(1.4) contrast(1.3) drop-shadow(0 0 15px rgba(0, 210, 255, 0.8));
 }
 
-/* 電流繞行軌道動畫 */
-@keyframes electric-flow {
-    0% { filter: hue-rotate(0deg) brightness(1); }
-    50% { filter: hue-rotate(180deg) brightness(2); }
-    100% { filter: hue-rotate(360deg) brightness(1); }
+/* 懸停時邊框電流全開 */
+.thunder-card:hover::before, .thunder-card:hover::after,
+.thunder-card:hover .sparks::before, .thunder-card:hover .sparks::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background: transparent;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px #00d2ff, inset 0 0 20px #00d2ff;
+    animation: none; /* 停止亂竄，改為持續高能鎖定 */
+}
+
+/* --- 預留位置 (Placeholder) 樣式 --- */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+}
+.placeholder-content span {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 關鍵動畫定義 --- */
+
+/* 電流水平亂竄 */
+@keyframes lightning-crawl-h {
+    0% { width: 0%; left: 0; opacity: 0; }
+    10% { width: 30%; left: 10%; opacity: 1; }
+    30% { width: 10%; left: 80%; opacity: 0; }
+    50% { width: 60%; left: 20%; opacity: 1; }
+    100% { width: 0%; left: 100%; opacity: 0; }
+}
+
+/* 電流垂直亂竄 */
+@keyframes lightning-crawl-v {
+    0% { height: 0%; top: 0; opacity: 0; }
+    20% { height: 40%; top: 10%; opacity: 1; }
+    40% { height: 10%; top: 80%; opacity: 0; }
+    60% { height: 50%; top: 30%; opacity: 1; }
+    100% { height: 0%; top: 100%; opacity: 0; }
+}
+
+/* 炸裂震動 (模擬被電擊) */
+@keyframes thunder-shake {
+    0% { transform: scale(1.15) translate(0, 0); }
+    10% { transform: scale(1.15) translate(-3px, -3px); filter: brightness(2) sepia(1) hue-rotate(180deg); } /* 瞬間過曝變色 */
+    20% { transform: scale(1.15) translate(3px, 3px); }
+    30% { transform: scale(1.15) translate(-3px, 3px); }
+    40% { transform: scale(1.15) translate(3px, -3px); }
+    50% { transform: scale(1.15) translate(-2px, 0); }
+    60% { transform: scale(1.15) translate(2px, 0); }
+    70% { transform: scale(1.15) translate(0, 2px); filter: brightness(1.5); }
+    100% { transform: scale(1.15) translate(0, 0); }
 }
     </style>
 </head>
@@ -287,22 +386,23 @@
             </p>
         </div>
 <div class="content-section">
-    <h2 style="text-align: center; color: var(--spark-blue);">2025 榮耀之巔</h2>
+    <h2 style="text-align: center; color: var(--spark-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 5px; margin-bottom: 40px;">
+        2025 榮耀之巔 / THE PEAK OF GLORY
+    </h2>
     
-    <div class="trophy-energy-field">
-        <img src="your-optimized-trophy.jpg" alt="ENJOY AI 2025 Runner Up Trophy" class="trophy-img">
+    <div class="glory-grid-container">
         
-        <div class="lightning-flash"></div>
-    </div>
+        <div class="thunder-card">
+            <div class="sparks"></div> 
+            <img src="2025-trophy-optimized.jpg" alt="2025 Champion Trophy" class="trophy-img">
+        </div>
 
-    <svg style="position: absolute; width: 0; height: 0;">
-        <filter id="lightning-shock">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" seed="1">
-                <animate attributeName="seed" from="1" to="100" dur="0.2s" repeatCount="indefinite" />
-            </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" scale="15" />
-        </filter>
-    </svg>
+        <div class="thunder-card">
+            <div class="sparks"></div> 
+            <img src="2025-highlight-02.jpg" alt="2025 Highlights" class="trophy-img">
+        </div>
+
+    </div>
 </div>
         
       <div class="content-section">
