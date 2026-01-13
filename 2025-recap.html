@@ -212,7 +212,11 @@
 .winner-table td {
     line-height: 1.5;
 }
-    /* --- 雙相框佈局容器 --- */
+  /* =========================================
+   2025 榮耀之巔 - 終極雷鳴版 CSS (Merged)
+   ========================================= */
+
+/* --- 雙相框佈局容器 (保留原樣) --- */
 .glory-grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr; /* 左右各一半 */
@@ -223,104 +227,116 @@
     padding: 20px;
 }
 
-/* 手機版自動變直排 */
+/* 手機版自動變直排 (保留原樣) */
 @media (max-width: 768px) {
     .glory-grid-container {
         grid-template-columns: 1fr;
     }
 }
 
-/* --- 核心卡片設計 (能量抑制器) --- */
+/* --- 核心卡片設計 (基礎設定保留原樣) --- */
 .thunder-card {
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 4; /* 保持直式比例 */
-    background: #000;
+    background: #000; /* 純黑背景襯托閃電 */
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     z-index: 1;
+    overflow: visible; /* 讓閃電可以超出框框一點點 */
 }
 
-/* --- 1. 靜態：瘋狂亂竄的電流邊框 --- */
-/* 使用四個偽元素模擬四周不規則閃電 */
+/* =========================================
+   ⚡️ 新版核心：真實折線閃電邊框 (取代舊版) ⚡️
+   ========================================= */
+
+/* 閃電邊框共同設定：注入 SVG 濾鏡 */
 .thunder-card::before, .thunder-card::after, 
 .thunder-card .sparks::before, .thunder-card .sparks::after {
     content: '';
     position: absolute;
-    background: #00d2ff; /* 閃電藍 */
-    z-index: -1;
-    transition: 0.2s;
+    background: #fff; /* 閃電核心必須是白色，看起來才亮 */
+    z-index: 1; /* 放在背景之上，圖片之下 */
+    /* 核心關鍵：套用 SVG 折線濾鏡 + 雙重藍色光暈 */
+    filter: url(#real-lightning) drop-shadow(0 0 5px #00d2ff) drop-shadow(0 0 15px #00d2ff);
+    pointer-events: none;
+    opacity: 0.9;
 }
 
-/* 上下邊框電流 */
-.thunder-card::before, .thunder-card::after {
-    height: 2px;
-    width: 0%;
-    left: 0;
-    box-shadow: 0 0 10px #00d2ff, 0 0 20px #fff;
-    animation: lightning-crawl-h 2s infinite linear alternate-reverse;
+/* 橫向閃電 (上下邊) - 使用新的跳躍動畫 */
+.thunder-card::before {
+    top: -4px; height: 3px; width: 0%; left: 0;
+    animation: lightning-strike-h 1.4s infinite ease-in-out;
 }
-.thunder-card::before { top: 0; }
-.thunder-card::after { bottom: 0; animation-delay: 1s; }
+.thunder-card::after {
+    bottom: -4px; height: 3px; width: 0%; right: 0;
+    animation: lightning-strike-h 1.4s infinite ease-in-out 0.7s;
+}
 
-/* 左右邊框電流 */
+/* 縱向閃電 (左右邊，位於 .sparks 容器內) - 使用新的跳躍動畫 */
 .thunder-card .sparks {
     position: absolute;
     inset: 0;
     pointer-events: none;
+    z-index: 1;
 }
-.thunder-card .sparks::before, .thunder-card .sparks::after {
-    width: 2px;
-    height: 0%;
-    top: 0;
-    box-shadow: 0 0 10px var(--spark-orange), 0 0 20px #fff; /* 混入橘色電流 */
-    animation: lightning-crawl-v 1.5s infinite linear alternate;
+.thunder-card .sparks::before {
+    left: -4px; width: 3px; height: 0%; top: 0;
+    animation: lightning-strike-v 1.1s infinite ease-in-out 0.3s;
 }
-.thunder-card .sparks::before { left: 0; }
-.thunder-card .sparks::after { right: 0; animation-delay: 0.5s; }
+.thunder-card .sparks::after {
+    right: -4px; width: 3px; height: 0%; bottom: 0;
+    animation: lightning-strike-v 1.1s infinite ease-in-out 0.8s;
+}
 
-/* --- 圖片本體設定 --- */
+/* --- 圖片本體設定 (保留原樣) --- */
 .thunder-card img {
     width: 96%;
     height: 96%;
-    object-fit: contain; /* 完整顯示獎盃 */
-    transition: transform 0.1s; /* 極快反應 */
+    object-fit: contain;
+    transition: transform 0.1s;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* 確保圖片壓在閃電邊框上 */
     filter: brightness(0.9) contrast(1.1);
 }
 
-/* --- 2. 懸停：視覺炸裂 (Thunder Shock) --- */
+/* =========================================
+   🤜 懸停狀態：能量過載炸裂 (融合增強版) 🤛
+   ========================================= */
+
+/* 卡片整體懸停效果 (保留原本的環境光暈，移除舊的白邊框) */
 .thunder-card:hover {
-    z-index: 10; /* 確保炸裂時壓在最上面 */
+    z-index: 10;
     box-shadow: 
-        0 0 30px rgba(0, 210, 255, 0.6), 
-        0 0 60px rgba(255, 110, 0, 0.4),
-        inset 0 0 20px rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+        0 0 40px rgba(0, 210, 255, 0.5), 
+        0 0 80px rgba(255, 110, 0, 0.3); /* 藍橘混合光暈 */
+    /* border: 1px solid ... 這裡移除舊的直角邊框，改用下方的閃電邊框取代 */
 }
 
+/* 圖片懸停特效 (完美保留你原本的炸裂震動) */
 .thunder-card:hover img {
     animation: thunder-shake 0.4s cubic-bezier(.36,.07,.19,.97) both infinite;
-    transform: scale(1.15); /* 瞬間放大 */
-    filter: brightness(1.4) contrast(1.3) drop-shadow(0 0 15px rgba(0, 210, 255, 0.8));
+    transform: scale(1.15);
+    filter: brightness(1.4) contrast(1.3) drop-shadow(0 0 20px rgba(0, 210, 255, 0.8));
 }
 
-/* 懸停時邊框電流全開 */
+/* ⚡️ 邊框懸停特效強化：變為持續燃燒的折線電弧 ⚡️ */
 .thunder-card:hover::before, .thunder-card:hover::after,
 .thunder-card:hover .sparks::before, .thunder-card:hover .sparks::after {
-    width: 100%;
-    height: 100%;
+    animation: none; /* 停止跳躍動畫，改為持續顯示 */
+    width: 104%; /* 稍微擴大一點包住卡片 */
+    height: 104%;
+    left: -2%; top: -2%; /* 居中修正 */
+    background: transparent; /* 背景透明 */
+    border: 3px solid #fff; /* 實心白色邊框作為濾鏡基礎 */
+    /* 增強濾鏡強度：讓邊框看起來像瘋狂燃燒的白色電漿 */
+    filter: url(#real-lightning) drop-shadow(0 0 10px #fff) drop-shadow(0 0 30px #00d2ff) brightness(1.2);
     opacity: 1;
-    background: transparent;
-    border: 2px solid #fff;
-    box-shadow: 0 0 20px #00d2ff, inset 0 0 20px #00d2ff;
-    animation: none; /* 停止亂竄，改為持續高能鎖定 */
 }
 
-/* --- 預留位置 (Placeholder) 樣式 --- */
+/* --- 預留位置 (Placeholder) 樣式 (保留原樣) --- */
 .placeholder-content {
     display: flex;
     flex-direction: column;
@@ -330,6 +346,7 @@
     color: rgba(255, 255, 255, 0.3);
     font-family: 'Orbitron', sans-serif;
     text-align: center;
+    z-index: 2;
 }
 .placeholder-content span {
     font-size: 3rem;
@@ -337,30 +354,34 @@
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- 關鍵動畫定義 --- */
+/* =========================================
+   🎬 動畫關鍵影格定義 (全部更新為跳躍版)
+   ========================================= */
 
-/* 電流水平亂竄 */
-@keyframes lightning-crawl-h {
+/* 新版：閃電水平跳躍竄動 (非線性) */
+@keyframes lightning-strike-h {
     0% { width: 0%; left: 0; opacity: 0; }
-    10% { width: 30%; left: 10%; opacity: 1; }
-    30% { width: 10%; left: 80%; opacity: 0; }
-    50% { width: 60%; left: 20%; opacity: 1; }
-    100% { width: 0%; left: 100%; opacity: 0; }
+    5% { width: 40%; left: 0; opacity: 1; } /* 瞬間出現 */
+    15% { width: 10%; left: 40%; } /* 縮短並移動 */
+    25% { width: 60%; left: 30%; opacity: 1; } /* 再次變長 */
+    35% { width: 0%; left: 100%; opacity: 0; } /* 消失 */
+    100% { width: 0%; left: 100%; opacity: 0; } /* 等待下一次循環 */
 }
 
-/* 電流垂直亂竄 */
-@keyframes lightning-crawl-v {
+/* 新版：閃電垂直跳躍竄動 (非線性) */
+@keyframes lightning-strike-v {
     0% { height: 0%; top: 0; opacity: 0; }
-    20% { height: 40%; top: 10%; opacity: 1; }
-    40% { height: 10%; top: 80%; opacity: 0; }
-    60% { height: 50%; top: 30%; opacity: 1; }
+    10% { height: 50%; top: 0; opacity: 1; }
+    25% { height: 20%; top: 50%; }
+    40% { height: 70%; top: 30%; opacity: 1; }
+    55% { height: 0%; top: 100%; opacity: 0; }
     100% { height: 0%; top: 100%; opacity: 0; }
 }
 
-/* 炸裂震動 (模擬被電擊) */
+/* 炸裂震動 (完美保留你原本的參數) */
 @keyframes thunder-shake {
     0% { transform: scale(1.15) translate(0, 0); }
-    10% { transform: scale(1.15) translate(-3px, -3px); filter: brightness(2) sepia(1) hue-rotate(180deg); } /* 瞬間過曝變色 */
+    10% { transform: scale(1.15) translate(-3px, -3px); filter: brightness(2) sepia(1) hue-rotate(180deg); }
     20% { transform: scale(1.15) translate(3px, 3px); }
     30% { transform: scale(1.15) translate(-3px, 3px); }
     40% { transform: scale(1.15) translate(3px, -3px); }
