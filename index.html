@@ -683,6 +683,14 @@ html {
         max-width: 400px;
     }
 }
+        html {
+    scroll-behavior: smooth; /* 讓全站錨點跳轉變成平滑捲動 */
+}
+
+/* 考慮到導覽列高度，可以加上捲動偏移，避免標題被導覽列遮住 */
+.rules-section {
+    scroll-margin-top: 80px; /* 數值根據你導覽列的高度決定 */
+}
 </style>
 </head>
         
@@ -698,7 +706,7 @@ html {
         <li><a href="#">首頁</a></li>
         <li><a href="#rules">競賽規範</a></li>
         <li><a href="#contact">聯絡我們</a></li>
-        <li><a href="#whale-robot">鯨魚機器人</a><li>
+        <li><a href="#whale-robot">鯨魚機器人</a></li>
         
         <li class="dropdown">
             <a href="#" class="dropbtn">賽事回顧 ▼</a>
@@ -707,6 +715,10 @@ html {
             </div>
         </li>
     </ul>
+       <section id="rules" class="rules-section"> <h2 class="section-title">競賽規範</h2>
+    <div class="rules-grid">
+        </div>
+</section>
 </nav>
 
     <div class="side-nav">
