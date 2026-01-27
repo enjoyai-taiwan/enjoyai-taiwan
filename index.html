@@ -718,37 +718,37 @@ html {
 
 /* --- 手機版專用 RWD 樣式 (1024px 以下觸發) --- */
 @media (max-width: 1024px) {
-  menu-toggle {
+    /* 修正 1：加上點號 .menu-toggle */
+    .menu-toggle {
         display: flex;
-        z-index: 2100; /* 必須高於 .nav-links 的 1050 或 2001 */
-        position: relative; /* 確保 z-index 生效 */
+        z-index: 2100 !important; /* 提高到最高層級 */
+        position: relative; 
     }
 
-    /* 2. 當選單打開時，讓叉叉按鈕顏色更亮，避免被深色背景吃掉 */
+    /* 2. 當選單打開時，讓叉叉按鈕顏色更亮 */
     .menu-toggle.active span {
-        background-color: #ffffff; /* 變成白色叉叉，更清晰 */
-        box-shadow: 0 0 10px var(--spark-blue); /* 加入發光感 */
+        background-color: #ffffff; 
+        box-shadow: 0 0 10px var(--spark-blue);
     }
 
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%; /* 初始藏在右邊螢幕外 */
+        right: -100%; 
         width: 70%;
         height: 100vh;
-        background: rgba(10, 14, 23, 0.98); /* 極深色背景 */
+        background: rgba(10, 14, 23, 0.98); 
         backdrop-filter: blur(15px);
         flex-direction: column;
         justify-content: center;
         align-items: center;
         transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9999 !important; /* 確保高於 side-nav 和其他邊框 */
+        z-index: 2000; /* 選單層級低於按鈕的 2100 */
         border-left: 2px solid var(--spark-blue);
         box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-        display: flex !important; /* 強制開啟顯示 */
+        display: flex !important;
     }
 
-    /* 當 JS 加入 active 類別時滑入 */
     .nav-links.active {
         right: 0 !important;
     }
@@ -764,19 +764,21 @@ html {
     .menu-toggle.active span:nth-child(2) { opacity: 0; }
     .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
     
-    /* 手機版下拉選單簡化 */
+    /* 修正 2：補上 .dropdown-content 的閉合大括號 */
     .dropdown-content {
         position: static;
         background: rgba(255, 255, 255, 0.05);
         box-shadow: none;
-        display: block; /* 在手機版直接展開或根據需求調整 */
-        /* 4. 自動隱藏干擾選單的右側側邊按鈕 */
+        display: block; 
+    } /* <--- 原本漏掉這個 } */
+
+    /* 4. 自動隱藏干擾選單的右側側邊按鈕 (確保在 dropdown 外面) */
     .nav-links.active ~ .side-nav {
         opacity: 0;
         pointer-events: none;
         transition: 0.3s;
     }
-}
+} /* @media 結束 */
 </style>
 </head>
         
