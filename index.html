@@ -718,8 +718,16 @@ html {
 
 /* --- 手機版專用 RWD 樣式 (1024px 以下觸發) --- */
 @media (max-width: 1024px) {
-    .menu-toggle {
-        display: flex; /* 在手機版顯示漢堡 */
+  menu-toggle {
+        display: flex;
+        z-index: 2100; /* 必須高於 .nav-links 的 1050 或 2001 */
+        position: relative; /* 確保 z-index 生效 */
+    }
+
+    /* 2. 當選單打開時，讓叉叉按鈕顏色更亮，避免被深色背景吃掉 */
+    .menu-toggle.active span {
+        background-color: #ffffff; /* 變成白色叉叉，更清晰 */
+        box-shadow: 0 0 10px var(--spark-blue); /* 加入發光感 */
     }
 
     .nav-links {
@@ -762,6 +770,11 @@ html {
         background: rgba(255, 255, 255, 0.05);
         box-shadow: none;
         display: block; /* 在手機版直接展開或根據需求調整 */
+        /* 4. 自動隱藏干擾選單的右側側邊按鈕 */
+    .nav-links.active ~ .side-nav {
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
     }
 }
 </style>
